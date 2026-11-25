@@ -1,0 +1,31 @@
+{
+  "name": "jobmatch-monorepo",
+  "version": "1.0.0",
+  "description": "Jobmatch - 4-Sided Talent & Employability Platform (Seeker, Company, University, Admin)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "db:migrate": "node --experimental-strip-types database/migrate.ts",
+    "db:seed": "node --experimental-strip-types database/migrate.ts",
+    "dev:server": "npm --prefix server run dev",
+    "test:server": "npm --prefix server test",
+    "test": "npm run test:server",
+    "dev:client": "npm --prefix client run dev",
+    "build:client": "npm --prefix client run build",
+    "build:server": "npm --prefix server run build",
+    "build": "npm --prefix client run build && npm --prefix server run build",
+    "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "keywords": [
+    "jobmatch",
+    "recruitment",
+    "ats",
+    "university",
+    "sqlite"
+  ],
+  "author": "Agent Office Engineering Core",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

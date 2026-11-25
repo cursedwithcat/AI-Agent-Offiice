@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jobmatch - UI/UX Interactive Wireframe Prototype</title>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans & Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons or Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Prompt"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb', // Primary Blue
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a', // Deep Royal
+            },
+            growth: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981', // Accent Emerald
+              600: '#059669',
+              700: '#047857',
+            },
+            uni: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed', // University Violet
+              700: '#6d28d9',
+            },
+            admin: {
+              50: '#fffbeb',
+              600: '#d97706', // Admin Amber
+              700: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif; }
+    .badge-shimmer {
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP PROTOTYPE BAR CONTROLLER -->
+  <header class="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-growth-500 flex items-center justify-center font-bold text-lg tracking-wider text-white shadow-inner">
+          JM
+        </div>
+        <div>
+          <span class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
+            Jobmatch <span class="text-xs px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 font-mono border border-brand-500/30">Wireframe v1.0</span>
+          </span>
+          <p class="text-[11px] text-slate-400">Design System & Interactive Role Prototype by Maya Lin</p>
+        </div>
+      </div>
+
+      <!-- PERSONA SWITCHER TABS -->
+      <nav class="flex items-center space-x-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 overflow-x-auto">
+        <button onclick="switchView('seeker')" id="btn-seeker" class="view-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-brand-600 text-white shadow-sm">
+          <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+          <span>1. ผู้หางาน / นักศึกษา</span>
+        </button>
+        <button onclick="switchView('company')" id="btn-company" class="view-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 flex items-center gap-1.5 transition-all">
+          <i data-lucide="building-2" class="w-4 h-4"></i>
+          <span>2. บริษัท (ATS)</span>
+        </button>
+        <button onclick="switchView('university')" id="btn-university" class="view-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 flex items-center gap-1.5 transition-all">
+          <i data-lucide="landmark" class="w-4 h-4"></i>
+          <span>3. มหาวิทยาลัย (Analytics)</span>
+        </button>
+        <button onclick="switchView('admin')" id="btn-admin" class="view-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 flex items-center gap-1.5 transition-all">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>4. แอดมิน (Governance)</span>
+        </button>
+        <button onclick="switchView('tokens')" id="btn-tokens" class="view-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700/50 flex items-center gap-1.5 transition-all">
+          <i data-lucide="palette" class="w-4 h-4"></i>
+          <span>5. Design Tokens & States</span>
+        </button>
+      </nav>
+
+      <!-- QUICK ACTIONS -->
+      <div class="flex items-center gap-2">
+        <button onclick="openApplyModal()" class="px-2.5 py-1 text-xs font-medium rounded-md bg-growth-600 hover:bg-growth-500 text-white flex items-center gap-1">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i> Test Apply Flow
+        </button>
+        <button onclick="toggleDeviceView()" id="deviceToggleBtn" class="p-1.5 text-slate-400 hover:text-white rounded-md hover:bg-slate-800" title="Toggle Mobile/Desktop Canvas">
+          <i data-lucide="smartphone" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CANVAS CONTAINER -->
+  <main id="canvasContainer" class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 transition-all duration-300">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: JOB SEEKER (DISCOVERY & TRACKER)   -->
+    <!-- ========================================== -->
+    <section id="view-seeker" class="view-pane space-y-6">
+      
+      <!-- HERO & ONBOARDING / STATS BANNER -->
+      <div class="rounded-2xl bg-gradient-to-r from-brand-900 via-brand-800 to-slate-900 text-white p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-growth-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="max-w-2xl space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium text-growth-300 border border-white/10">
+              <span class="w-2 h-2 rounded-full bg-growth-400 animate-pulse"></span>
+              Verified Talent Ecosystem for Chulalongkorn & Thai Universities
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              ค้นพบโอกาสงานที่ใช่ และติดตามผลสมัครงานได้แบบโปร่งใส 100%
+            </h1>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              เชื่อมต่อประวัตินักศึกษาที่ได้รับการยืนยันวุฒิการศึกษาโดยตรงสู่บริษัทชั้นนำ ยื่นใบสมัครเพียงคลิกเดียว พร้อมอัปเดตสถานะแบบเรียลไทม์
+            </p>
+          </div>
+
+          <!-- MINI PROFILE COMPLETION WIDGET -->
+          <div class="bg-white/10 backdrop-blur-md border border-white/15 p-4 rounded-xl min-w-[260px]">
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="font-medium text-slate-200">ความสมบูรณ์ของโปรไฟล์</span>
+              <span class="font-bold text-growth-400">85% Complete</span>
+            </div>
+            <div class="w-full bg-slate-700/60 rounded-full h-2 mb-3 overflow-hidden">
+              <div class="bg-gradient-to-r from-brand-500 to-growth-400 h-2 rounded-full transition-all duration-500" style="width: 85%"></div>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-300">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-growth-400"></i>
+              <span>วุฒิการศึกษาผ่านการยืนยันจากมหาวิทยาลัยแล้ว</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEARCH & MULTI-CRITERIA FILTERS BAR -->
+        <div class="mt-6 pt-5 border-t border-white/10 grid grid-cols-1 sm:grid-cols-12 gap-3 text-slate-900">
+          <div class="sm:col-span-5 relative">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400"></i>
+            <input type="text" placeholder="ค้นหาตำแหน่งงาน เช่น Frontend Developer, Data Analyst..." class="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl text-sm border-0 ring-1 ring-slate-300 focus:ring-2 focus:ring-brand-500 shadow-sm outline-none">
+          </div>
+          <div class="sm:col-span-3 relative">
+            <i data-lucide="map-pin" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400"></i>
+            <select class="w-full pl-10 pr-8 py-2.5 bg-white rounded-xl text-sm border-0 ring-1 ring-slate-300 focus:ring-2 focus:ring-brand-500 shadow-sm appearance-none outline-none">
+              <option>ทุกสถานที่ (All Locations)</option>
+              <option>กรุงเทพฯ & ปริมณฑล</option>
+              <option>Hybrid / ทำงานผสมผสาน</option>
+              <option>Remote 100%</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2 relative">
+            <select class="w-full px-3 py-2.5 bg-white rounded-xl text-sm border-0 ring-1 ring-slate-300 focus:ring-2 focus:ring-brand-500 shadow-sm appearance-none outline-none">
+              <option>ประเภทงาน (All)</option>
+              <option>งานประจำ (Full-time)</option>
+              <option>ฝึกงาน (Internship)</option>
+              <option>พาร์ทไทม์ (Part-time)</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <button class="w-full py-2.5 px-4 bg-growth-600 hover:bg-growth-500 text-white font-semibold rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-1.5">
+              <i data-lucide="filter" class="w-4 h-4"></i>
+              ค้นหางาน
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT: DUAL COLUMN (JOBS FEED + APPLICATION TRACKING DRAWER) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT COLUMN: JOB LISTINGS CATALOG (7 COLS) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="briefcase" class="w-4 h-4 text-brand-600"></i>
+              ตำแหน่งงานแนะนำสำหรับคุณ (Recommended Positions)
+            </h2>
+            <span class="text-xs text-slate-500 font-medium">พบ 24 ตำแหน่งเปิดรับ</span>
+          </div>
+
+          <!-- JOB CARD 1 -->
+          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-500/60 hover:shadow-md transition-all group relative">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-start space-x-3.5">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center font-bold text-brand-700 text-lg flex-shrink-0">
+                  SCG
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors">Junior Fullstack Developer (Node.js & React)</h3>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-brand-700 border border-blue-200">Verified Partner</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-0.5 font-medium">SCG Digital Ventures • บางซื่อ, กรุงเทพฯ (Hybrid)</p>
+                </div>
+              </div>
+              <button class="text-slate-400 hover:text-amber-500 transition-colors">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-600 line-clamp-2 leading-relaxed">
+              ร่วมพัฒนาระบบ Enterprise Cloud Solutions ร่วมกับทีม Tech Talent รุ่นใหม่ ยินดีรับนักศึกษาจบใหม่ หรือผู้มีประสบการณ์ 0-2 ปี มี Mentorship ดูแลอย่างใกล้ชิด
+            </p>
+
+            <div class="mt-3 flex flex-wrap items-center gap-1.5">
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">TypeScript</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">Next.js</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">PostgreSQL</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-50 text-growth-700 font-semibold">฿35,000 - ฿48,000 / เดือน</span>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400 flex items-center gap-1">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> ลงประกาศเมื่อ 2 ชั่วโมงที่แล้ว
+              </span>
+              <button onclick="openApplyModal('Junior Fullstack Developer', 'SCG Digital Ventures')" class="px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition-colors flex items-center gap-1.5">
+                <span>สมัครงานทันที (1-Click Apply)</span>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- JOB CARD 2 -->
+          <div class="bg-white rounded-xl p-5 border border-slate-200 hover:border-brand-500/60 hover:shadow-md transition-all group relative">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-start space-x-3.5">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center font-bold text-uni-600 text-lg flex-shrink-0">
+                  LIN
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-base font-bold text-slate-900 group-hover:text-brand-600 transition-colors">UI/UX Designer Trainee / Internship</h3>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-50 text-uni-700 border border-purple-200">Campus Exclusive</span>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-0.5 font-medium">LINE MAN Wongnai • พระราม 9, กรุงเทพฯ</p>
+                </div>
+              </div>
+              <button class="text-slate-400 hover:text-amber-500 transition-colors">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-600 line-clamp-2 leading-relaxed">
+              ฝึกงานกับ Product Team ที่ดูแลผู้ใช้หลักล้านคน มีโอกาสออกแบบ Design System, User Testing, และนำเสนองานจริงกับ Head of Design
+            </p>
+
+            <div class="mt-3 flex flex-wrap items-center gap-1.5">
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">Figma</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">Design System</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">User Flow</span>
+              <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-50 text-growth-700 font-semibold">เบี้ยเลี้ยง ฿15,000 / เดือน</span>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-400 flex items-center gap-1">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> ลงประกาศเมื่อ 1 วันที่แล้ว
+              </span>
+              <button onclick="openApplyModal('UI/UX Designer Trainee', 'LINE MAN Wongnai')" class="px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition-colors flex items-center gap-1.5">
+                <span>สมัครงานทันที (1-Click Apply)</span>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- JOB CARD 3 (ALREADY APPLIED STATE) -->
+          <div class="bg-slate-50/80 rounded-xl p-5 border border-slate-200">
+            <div class="flex items-start justify-between gap-4 opacity-90">
+              <div class="flex items-start space-x-3.5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center font-bold text-growth-700 text-lg flex-shrink-0">
+                  AG
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-slate-800">Associate Data Engineer</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Agoda Services Co., Ltd. • CentralWorld Office</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-growth-800 border border-emerald-200 flex items-center gap-1">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i> ส่งใบสมัครแล้ว
+              </span>
+            </div>
+            <div class="mt-3 text-xs text-slate-500">
+              ยื่นสมัครเมื่อ: 28 ต.ค. 2026 • สถานะปัจจุบัน: <strong class="text-brand-600">Shortlisted (รอสัมภาษณ์รอบแรก)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: APPLICANT REAL-TIME TRACKING TIMELINE (5 COLS) -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-growth-600"></i>
+                ติดตามสถานะใบสมัครของฉัน (My Applications)
+              </h2>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-700">3 รายการ</span>
+            </div>
+
+            <!-- APPLICATION TRACKING ITEM 1 -->
+            <div class="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">Associate Data Engineer</h4>
+                  <p class="text-[11px] text-slate-500">Agoda • สมัครเมื่อ 28 ต.ค. 2026</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                  Shortlisted
+                </span>
+              </div>
+
+              <!-- PROGRESSION STEPPER -->
+              <div class="relative flex items-center justify-between pt-1 text-[10px] font-medium text-slate-500">
+                <div class="flex flex-col items-center z-10">
+                  <div class="w-5 h-5 rounded-full bg-growth-600 text-white flex items-center justify-center text-[10px]">✓</div>
+                  <span class="mt-1 text-growth-700 font-semibold">ยื่นแล้ว</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-growth-500 -mt-3"></div>
+                <div class="flex flex-col items-center z-10">
+                  <div class="w-5 h-5 rounded-full bg-growth-600 text-white flex items-center justify-center text-[10px]">✓</div>
+                  <span class="mt-1 text-growth-700 font-semibold">HR ตรวจแล้ว</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-brand-500 -mt-3"></div>
+                <div class="flex flex-col items-center z-10">
+                  <div class="w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-[10px] animate-pulse">3</div>
+                  <span class="mt-1 text-brand-600 font-bold">นัดสัมภาษณ์</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-slate-200 -mt-3"></div>
+                <div class="flex flex-col items-center z-10">
+                  <div class="w-5 h-5 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center text-[10px]">4</div>
+                  <span class="mt-1 text-slate-400">Offer / จ้าง</span>
+                </div>
+              </div>
+
+              <div class="bg-blue-50/70 p-2.5 rounded-lg text-[11px] text-brand-900 flex items-start gap-2 border border-blue-100">
+                <i data-lucide="calendar" class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5"></i>
+                <div>
+                  <strong>HR อัปเดตนัดหมาย:</strong> สัมภาษณ์ Technical ผ่าน Google Meet ในวันที่ 4 พ.ย. 2026 เวลา 14:00 น.
+                </div>
+              </div>
+            </div>
+
+            <!-- APPLICATION TRACKING ITEM 2 -->
+            <div class="mt-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">Frontend Intern</h4>
+                  <p class="text-[11px] text-slate-500">Bitkub Online • สมัครเมื่อ 30 ต.ค. 2026</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-brand-700 border border-blue-200">
+                  Under Review
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-500">ใบสมัครกำลังอยู่ในขั้นตอนการพิจารณาโดย Hiring Manager</p>
+            </div>
+
+            <!-- RESUME & VERIFICATION BADGE CARD -->
+            <div class="mt-4 p-4 rounded-xl bg-gradient-to-br from-slate-900 to-brand-950 text-white space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold flex items-center gap-1.5 text-growth-300">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-growth-400"></i>
+                  Chulalongkorn University Verified
+                </span>
+                <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-300">B.Sc. Computer Science</span>
+              </div>
+              <p class="text-[11px] text-slate-300">
+                เกรดเฉลี่ย (GPAX) และสถานะนิสิตผ่านการรับรองตรงจากสำนักทะเบียนมหาวิทยาลัย ไม่ต้องแนบเอกสารรับรองซ้ำซ้อน
+              </p>
+              <div class="pt-1 flex items-center justify-between">
+                <span class="text-[11px] text-slate-400 font-mono">Resume_Somchai_2026.pdf</span>
+                <button class="text-xs text-brand-300 hover:text-white underline flex items-center gap-1">
+                  <i data-lucide="download" class="w-3 h-3"></i> ดูไฟล์ PDF
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: COMPANY WORKSPACE (ATS PIPELINE)   -->
+    <!-- ========================================== -->
+    <section id="view-company" class="view-pane hidden space-y-6">
+      
+      <!-- COMPANY HEADER & STATS -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 border border-brand-200 flex items-center justify-center font-extrabold text-2xl text-brand-700">
+            SCG
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-xl font-bold text-slate-900">SCG Digital Ventures (ATS Portal)</h1>
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-growth-700 border border-emerald-200">Corporate Verified</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+              กำลังจัดการ 5 ตำแหน่งงานเปิดรับ • ผู้สมัครรวม 84 คน • อัตราการคัดเลือกเฉลี่ย 4.2 วัน
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <button onclick="switchAtsView('kanban')" id="btnAtsKanban" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white flex items-center gap-1">
+            <i data-lucide="columns-3" class="w-3.5 h-3.5"></i> Kanban Pipeline
+          </button>
+          <button onclick="switchAtsView('table')" id="btnAtsTable" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center gap-1">
+            <i data-lucide="table" class="w-3.5 h-3.5"></i> List View
+          </button>
+          <button class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-brand-600 hover:bg-brand-700 text-white flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> สร้างประกาศรับสมัครงานใหม่
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTIVE REQUISITION SELECTOR BAR -->
+      <div class="bg-slate-100 p-2.5 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-700">ตำแหน่งที่เลือก:</span>
+          <select class="bg-white border border-slate-300 rounded-lg px-3 py-1.5 font-semibold text-slate-800 shadow-sm outline-none">
+            <option>Junior Fullstack Developer (Node.js & React) - 28 ผู้สมัคร</option>
+            <option>Data Engineer Associate - 34 ผู้สมัคร</option>
+            <option>Product Design Intern - 22 ผู้สมัคร</option>
+          </select>
+          <span class="px-2 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[11px]">สถานะ: Published (เปิดรับ)</span>
+        </div>
+        <div class="flex items-center gap-2 text-slate-500">
+          <span class="flex items-center gap-1"><i data-lucide="filter" class="w-3.5 h-3.5"></i> กรองตามสถาบัน:</span>
+          <select class="bg-white border border-slate-300 rounded-md px-2 py-1 text-xs">
+            <option>ทุกมหาวิทยาลัย (All)</option>
+            <option>จุฬาลงกรณ์มหาวิทยาลัย</option>
+            <option>เกษตรศาสตร์</option>
+            <option>ลาดกระบัง (KMITL)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ATS KANBAN BOARD CONTAINER -->
+      <div id="atsKanbanView" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        
+        <!-- COLUMN 1: APPLIED (NEW) -->
+        <div class="bg-slate-100/80 rounded-2xl p-3.5 border border-slate-200 flex flex-col space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+              <h3 class="text-xs font-bold text-slate-800">ยื่นสมัครใหม่ (Applied)</h3>
+            </div>
+            <span class="text-xs font-bold bg-white px-2 py-0.5 rounded-full text-slate-600 shadow-xs">12</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <!-- CANDIDATE CARD -->
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">นายสมชาย มั่นคง</h4>
+                  <p class="text-[11px] text-slate-500">วิทยาการคอมพิวเตอร์ • จุฬาฯ</p>
+                </div>
+                <span class="text-[10px] font-bold text-growth-700 bg-growth-50 px-1.5 py-0.5 rounded">GPA 3.65</span>
+              </div>
+              <div class="mt-2.5 flex flex-wrap gap-1">
+                <span class="px-1.5 py-0.5 bg-slate-100 text-[10px] rounded text-slate-600">TypeScript</span>
+                <span class="px-1.5 py-0.5 bg-slate-100 text-[10px] rounded text-slate-600">React</span>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <button class="text-brand-600 hover:text-brand-700 font-semibold flex items-center gap-1">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Resume
+                </button>
+                <button class="text-xs px-2 py-1 rounded bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-700 font-medium">
+                  ขยับขั้น ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- CANDIDATE CARD 2 -->
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">น.ส.วิไลลักษณ์ ศรีสุข</h4>
+                  <p class="text-[11px] text-slate-500">วิศวกรรมคอมพิวเตอร์ • ลาดกระบัง</p>
+                </div>
+                <span class="text-[10px] font-bold text-growth-700 bg-growth-50 px-1.5 py-0.5 rounded">GPA 3.82</span>
+              </div>
+              <div class="mt-2.5 flex flex-wrap gap-1">
+                <span class="px-1.5 py-0.5 bg-slate-100 text-[10px] rounded text-slate-600">Go</span>
+                <span class="px-1.5 py-0.5 bg-slate-100 text-[10px] rounded text-slate-600">Docker</span>
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <button class="text-brand-600 hover:text-brand-700 font-semibold flex items-center gap-1">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Resume
+                </button>
+                <button class="text-xs px-2 py-1 rounded bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-700 font-medium">
+                  ขยับขั้น ➔
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: REVIEWING -->
+        <div class="bg-slate-100/80 rounded-2xl p-3.5 border border-slate-200 flex flex-col space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <h3 class="text-xs font-bold text-slate-800">กำลังคัดกรอง (Reviewing)</h3>
+            </div>
+            <span class="text-xs font-bold bg-white px-2 py-0.5 rounded-full text-slate-600 shadow-xs">8</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">นายธนกฤต เจริญผล</h4>
+                  <p class="text-[11px] text-slate-500">ICT • ม.มหิดล</p>
+                </div>
+                <span class="text-[10px] font-bold text-growth-700 bg-growth-50 px-1.5 py-0.5 rounded">GPA 3.40</span>
+              </div>
+              <div class="mt-2 text-[11px] text-slate-500 italic">"มีประสบการณ์โปรเจกต์ React Native 1 ปี"</div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <button class="text-brand-600 hover:text-brand-700 font-semibold flex items-center gap-1">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Resume
+                </button>
+                <button class="text-xs px-2 py-1 rounded bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-700 font-medium">
+                  ขยับขั้น ➔
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMN 3: SHORTLISTED / INTERVIEW -->
+        <div class="bg-slate-100/80 rounded-2xl p-3.5 border border-slate-200 flex flex-col space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-uni-500"></span>
+              <h3 class="text-xs font-bold text-slate-800">นัดสัมภาษณ์ (Interview)</h3>
+            </div>
+            <span class="text-xs font-bold bg-white px-2 py-0.5 rounded-full text-slate-600 shadow-xs">5</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="bg-white p-3.5 rounded-xl border-l-4 border-l-uni-600 border-t border-r border-b border-slate-200 shadow-sm">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">น.ส.กานดา พิพัฒน์</h4>
+                  <p class="text-[11px] text-slate-500">สถิติประยุกต์ • มธ.</p>
+                </div>
+                <span class="text-[10px] font-bold text-uni-700 bg-uni-50 px-1.5 py-0.5 rounded">รอบ Technical</span>
+              </div>
+              <div class="mt-2 p-1.5 rounded bg-uni-50 text-[10px] text-uni-900 font-medium flex items-center gap-1">
+                <i data-lucide="calendar" class="w-3 h-3 text-uni-600"></i> 4 พ.ย. 14:00 น.
+              </div>
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <button class="text-growth-600 hover:text-growth-700 font-bold">ออก Offer</button>
+                <button class="text-red-500 hover:text-red-600 font-medium">ปฏิเสธ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMN 4: HIRED / OFFERED -->
+        <div class="bg-slate-100/80 rounded-2xl p-3.5 border border-slate-200 flex flex-col space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-growth-500"></span>
+              <h3 class="text-xs font-bold text-slate-800">รับเข้าทำงาน (Hired)</h3>
+            </div>
+            <span class="text-xs font-bold bg-white px-2 py-0.5 rounded-full text-growth-700 shadow-xs">3</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 shadow-xs">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">นายกิตติคุณ รัตนโชติ</h4>
+                  <p class="text-[11px] text-slate-600">วิศวกรรมคอมพิวเตอร์ • จุฬาฯ</p>
+                </div>
+                <i data-lucide="award" class="w-4 h-4 text-growth-600"></i>
+              </div>
+              <div class="mt-2 text-[10px] text-growth-800 font-semibold bg-emerald-100/80 px-2 py-1 rounded">
+                สถานะ: ยืนยันการจ้างงานเรียบร้อย (Sync กับมหาวิทยาลัยแล้ว)
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ALTERNATIVE HIGH DENSITY TABLE VIEW (HIDDEN BY DEFAULT) -->
+      <div id="atsTableView" class="hidden bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+          <span class="text-xs font-bold text-slate-700">รายชื่อผู้สมัครทั้งหมดแบบตาราง (High-Density Candidate Roster)</span>
+          <button class="text-xs text-brand-600 hover:underline font-semibold flex items-center gap-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Candidate CSV
+          </button>
+        </div>
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-100 text-slate-600 uppercase font-semibold text-[10px]">
+            <tr>
+              <th class="p-3">ชื่อ-นามสกุล</th>
+              <th class="p-3">มหาวิทยาลัย / คณะ</th>
+              <th class="p-3">เกรดเฉลี่ย</th>
+              <th class="p-3">วันที่สมัคร</th>
+              <th class="p-3">สถานะปัจจุบัน</th>
+              <th class="p-3 text-right">ดำเนินการ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-slate-900">นายสมชาย มั่นคง</td>
+              <td class="p-3">จุฬาลงกรณ์มหาวิทยาลัย (วท.บ. วิทยาการคอมพิวเตอร์)</td>
+              <td class="p-3 font-bold text-growth-700">3.65</td>
+              <td class="p-3">1 พ.ย. 2026</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Applied</span></td>
+              <td class="p-3 text-right space-x-2">
+                <button class="text-brand-600 font-semibold hover:underline">ดูประวัติ</button>
+                <button class="text-slate-500 hover:text-slate-900">เปลี่ยนสถานะ</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold text-slate-900">น.ส.วิไลลักษณ์ ศรีสุข</td>
+              <td class="p-3">สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</td>
+              <td class="p-3 font-bold text-growth-700">3.82</td>
+              <td class="p-3">31 ต.ค. 2026</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Applied</span></td>
+              <td class="p-3 text-right space-x-2">
+                <button class="text-brand-600 font-semibold hover:underline">ดูประวัติ</button>
+                <button class="text-slate-500 hover:text-slate-900">เปลี่ยนสถานะ</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: UNIVERSITY WORKSPACE (ANALYTICS)   -->
+    <!-- ========================================== -->
+    <section id="view-university" class="view-pane hidden space-y-6">
+      
+      <!-- UNIVERSITY HEADER -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 rounded-2xl bg-uni-50 border border-uni-200 flex items-center justify-center font-extrabold text-2xl text-uni-700">
+            CU
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-xl font-bold text-slate-900">Chulalongkorn University Career Center</h1>
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-uni-100 text-uni-800 border border-uni-200">Institutional Partner</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">
+              ระบบวิเคราะห์อัตราการมีงานทำของบัณฑิต (Graduate Employability Analytics) • ประจำปีการศึกษา 2026
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center gap-1.5">
+            <i data-lucide="file-spreadsheets" class="w-4 h-4 text-growth-600"></i> ส่งออกรายงาน สกอ. (MHESI Report)
+          </button>
+          <button class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-uni-600 hover:bg-uni-700 text-white flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> อัปโหลดรายชื่อนิสิต (CSV Roster)
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI METRIC CARDS (4-CARD GRID) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- METRIC 1 -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">นิสิตในรุ่นทั้งหมด</span>
+            <div class="p-2 rounded-xl bg-blue-50 text-brand-600">
+              <i data-lucide="users" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-2xl font-extrabold text-slate-900">3,420</span>
+            <span class="text-xs font-bold text-growth-600 flex items-center">↑ 100% Verified</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">นิสิตชั้นปีที่ 4 และบัณฑิตจบใหม่</p>
+        </div>
+
+        <!-- METRIC 2 -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">อัตราการมีงานทำ (Rate)</span>
+            <div class="p-2 rounded-xl bg-growth-50 text-growth-600">
+              <i data-lucide="trending-up" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-2xl font-extrabold text-growth-600">82.4%</span>
+            <span class="text-xs font-bold text-growth-600">+6.8% YoY</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">เป้าหมายมหาวิทยาลัย: 80%</p>
+        </div>
+
+        <!-- METRIC 3 -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ทำงานตรงสาย (In-Field)</span>
+            <div class="p-2 rounded-xl bg-purple-50 text-uni-600">
+              <i data-lucide="target" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-2xl font-extrabold text-uni-700">76.2%</span>
+            <span class="text-xs font-bold text-slate-500">2,148 คน</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">ตรงตามหลักสูตรวิชาชีพที่สำเร็จ</p>
+        </div>
+
+        <!-- METRIC 4 -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">เงินเดือนเฉลี่ยเริ่มต้น</span>
+            <div class="p-2 rounded-xl bg-amber-50 text-amber-600">
+              <i data-lucide="badge-dollar-sign" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-2xl font-extrabold text-slate-900">฿32,450</span>
+            <span class="text-xs font-bold text-growth-600">+8.4%</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">เทียบกับเกณฑ์สำรวจปีก่อนหน้า</p>
+        </div>
+      </div>
+
+      <!-- ANALYTICS BREAKDOWN & COHORT ROSTER -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- VISUAL CHART PREVIEW: EMPLOYABILITY BREAKDOWN (5 COLS) -->
+        <div class="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-900">สัดส่วนสถานะการมีงานทำ (KPI Breakdown)</h3>
+            <span class="text-xs text-slate-400">อัปเดตอัตโนมัติ</span>
+          </div>
+
+          <!-- MOCK VISUAL CHART BARS -->
+          <div class="space-y-3 pt-2">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-slate-700 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-growth-500"></span> ทำงานตรงสาขาวิชา (Employed In-Field)
+                </span>
+                <span class="font-bold text-slate-800">62.8% (2,148)</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-growth-500 h-2.5 rounded-full" style="width: 62.8%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-slate-700 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> ทำงานต่างสาขา (Employed Out-of-Field)
+                </span>
+                <span class="font-bold text-slate-800">19.6% (670)</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 19.6%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-slate-700 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> ศึกษาต่อระดับสูง (Continuing Studies)
+                </span>
+                <span class="font-bold text-slate-800">8.5% (290)</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-purple-500 h-2.5 rounded-full" style="width: 8.5%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-medium text-slate-700 flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> กำลังหางาน (Actively Seeking)
+                </span>
+                <span class="font-bold text-slate-800">9.1% (312)</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-amber-500 h-2.5 rounded-full" style="width: 9.1%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+            <span class="font-bold text-slate-800">💡 ข้อได้เปรียบของระบบ Jobmatch:</span>
+            <p class="text-[11px] leading-relaxed">
+              เมื่อบริษัทกดรับเข้าทำงานในระบบ ข้อมูลจะเชื่อมโยงเป็นสถานะ "ได้งานทำ" อัตโนมัติ โดยที่ฝ่ายทะเบียนไม่ต้องเสียเวลาทำแบบสอบถามติดตามผลหลังจบการศึกษา
+            </p>
+          </div>
+        </div>
+
+        <!-- COHORT STUDENT ROSTER TABLE (7 COLS) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+          <div class="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900">ทะเบียนนิสิตและสถานะการทำงาน (Student Roster)</h3>
+              <p class="text-xs text-slate-400">รุ่นปีการศึกษา 2026 • คณะวิทยาศาสตร์ & วิศวกรรมศาสตร์</p>
+            </div>
+            <input type="text" placeholder="ค้นหาชื่อนิสิต หรือเลขทะเบียน..." class="px-3 py-1.5 text-xs bg-slate-100 rounded-lg border-0 outline-none focus:ring-1 focus:ring-uni-500">
+          </div>
+
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-600 text-[10px] uppercase font-semibold">
+              <tr>
+                <th class="p-3">รหัสนิสิต / ชื่อ</th>
+                <th class="p-3">ภาควิชา</th>
+                <th class="p-3">สถานะการทำงาน</th>
+                <th class="p-3">บริษัทที่รับเข้าทำงาน</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-700">
+              <tr class="hover:bg-slate-50/80">
+                <td class="p-3">
+                  <div class="font-bold text-slate-900">นายสมชาย มั่นคง</div>
+                  <div class="text-[10px] text-slate-400 font-mono">6530281921</div>
+                </td>
+                <td class="p-3">วิทยาการคอมพิวเตอร์</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Actively Seeking</span>
+                </td>
+                <td class="p-3 text-slate-400 italic">อยู่ระหว่างคัดเลือก (2 ที่)</td>
+              </tr>
+              <tr class="hover:bg-slate-50/80">
+                <td class="p-3">
+                  <div class="font-bold text-slate-900">นายกิตติคุณ รัตนโชติ</div>
+                  <div class="text-[10px] text-slate-400 font-mono">6530114221</div>
+                </td>
+                <td class="p-3">วิศวกรรมคอมพิวเตอร์</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-growth-800">Employed In-Field</span>
+                </td>
+                <td class="p-3 font-semibold text-slate-800">SCG Digital Ventures</td>
+              </tr>
+              <tr class="hover:bg-slate-50/80">
+                <td class="p-3">
+                  <div class="font-bold text-slate-900">น.ส.อาริยา สมบัติ</div>
+                  <div class="text-[10px] text-slate-400 font-mono">6530441221</div>
+                </td>
+                <td class="p-3">คณิตศาสตร์และวิทยาการคำนวณ</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800">Continuing Studies</span>
+                </td>
+                <td class="p-3 text-slate-600">ปริญญาโท (Data Science)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: ADMIN COMMAND CENTER (GOVERNANCE)  -->
+    <!-- ========================================== -->
+    <section id="view-admin" class="view-pane hidden space-y-6">
+      
+      <!-- ADMIN HEADER -->
+      <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-slate-800">
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 rounded-2xl bg-admin-600 flex items-center justify-center font-extrabold text-2xl text-white shadow-inner">
+            <i data-lucide="shield-alert" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-xl font-bold">Platform Governance Command Center</h1>
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-admin-600/30 text-amber-300 border border-admin-600/50">Root Admin</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">
+              กำกับดูแลความปลอดภัย, ตรวจสอบตัวตนบริษัท (KYB), และจัดการเนื้อหาประกาศรับสมัครงาน
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Thai PDPA & RBAC Active
+          </span>
+        </div>
+      </div>
+
+      <!-- AUDIT STATS ROW -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="text-xs text-slate-500 font-medium">บริษัทรอตรวจเอกสาร (Pending KYB)</div>
+          <div class="text-xl font-bold text-amber-600 mt-1 flex items-center justify-between">
+            <span>4 บริษัท</span>
+            <button class="text-xs font-semibold text-brand-600 hover:underline">ตรวจทันที ➔</button>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="text-xs text-slate-500 font-medium">ประกาศงานที่ถูกรายงาน (Flagged Posts)</div>
+          <div class="text-xl font-bold text-red-600 mt-1 flex items-center justify-between">
+            <span>1 รายการ</span>
+            <button class="text-xs font-semibold text-red-600 hover:underline">ตรวจสอบ ➔</button>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200">
+          <div class="text-xs text-slate-500 font-medium">สถาบันการศึกษาในระบบ</div>
+          <div class="text-xl font-bold text-slate-900 mt-1 flex items-center justify-between">
+            <span>18 มหาวิทยาลัย</span>
+            <span class="text-xs text-growth-600 font-medium">Active 100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIT & MODERATION TABLE -->
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+        <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-900">คิวตรวจสอบบริษัทและประกาศรับสมัครงาน (Moderation Queue)</h3>
+          <div class="flex gap-2">
+            <button class="px-2.5 py-1 text-xs rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">ทั้งหมด</button>
+            <button class="px-2.5 py-1 text-xs rounded bg-amber-50 text-amber-700 border border-amber-200 font-bold">รอการอนุมัติ (4)</button>
+          </div>
+        </div>
+
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 text-slate-600 text-[10px] uppercase font-semibold">
+            <tr>
+              <th class="p-3">ประเภท</th>
+              <th class="p-3">ชื่อองค์กร / หัวข้องาน</th>
+              <th class="p-3">เลขทะเบียนนิติบุคคล / เอกสาร</th>
+              <th class="p-3">วันที่ส่งตรวจ</th>
+              <th class="p-3 text-right">คำสั่งการอนุมัติ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-brand-800">บริษัทใหม่ (KYB)</span></td>
+              <td class="p-3 font-semibold text-slate-900">บริษัท เทค คอนเน็กท์ จำกัด (TechConnect Co., Ltd.)</td>
+              <td class="p-3 font-mono text-slate-500">0105562019281 (แนบ ภพ.20)</td>
+              <td class="p-3">2 พ.ย. 2026</td>
+              <td class="p-3 text-right space-x-1.5">
+                <button class="px-2.5 py-1 rounded bg-growth-600 hover:bg-growth-500 text-white font-bold text-xs shadow-xs">อนุมัติ (Verify)</button>
+                <button class="px-2.5 py-1 rounded bg-red-100 hover:bg-red-200 text-red-700 font-bold text-xs">ปฏิเสธ</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800">งานส่อทุจริต (Flagged)</span></td>
+              <td class="p-3 font-semibold text-slate-900">"พิมพ์งานที่บ้าน รายได้วันละ 3,000 บาท ไม่จำกัดวุฒิ"</td>
+              <td class="p-3 text-slate-500">ผู้ใช้แจ้ง: เข้าข่ายหลอกลวงโอนเงินมัดจำ</td>
+              <td class="p-3">1 พ.ย. 2026</td>
+              <td class="p-3 text-right space-x-1.5">
+                <button class="px-2.5 py-1 rounded bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs">สั่งระงับทันที (Suspend)</button>
+                <button class="px-2.5 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs">เพิกถอนรายงาน</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: DESIGN SYSTEM TOKENS & UI STATES   -->
+    <!-- ========================================== -->
+    <section id="view-tokens" class="view-pane hidden space-y-8">
+      
+      <!-- TOKEN HEADER -->
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Jobmatch Design System & UI States</h1>
+        <p class="text-xs text-slate-500 mt-1">ระบบดีไซน์มาตรฐานสำหรับวิศวกรซอฟต์แวร์: Color Tokens, Typography, Component States, และ Micro-interactions</p>
+      </div>
+
+      <!-- 1. COLOR TOKENS PALETTE -->
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="palette" class="w-4 h-4 text-brand-600"></i>
+          1. Color Palette & Semantic Tokens
+        </h2>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+          
+          <!-- BRAND PRIMARY -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-blue-600 flex items-end p-2 text-white font-mono text-[11px] font-bold">
+              #2563EB
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Brand Primary</div>
+              <div class="text-[10px] text-slate-500">Main Action & Links</div>
+            </div>
+          </div>
+
+          <!-- BRAND DARK NAVY -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-slate-900 flex items-end p-2 text-white font-mono text-[11px] font-bold">
+              #0F172A
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Deep Slate</div>
+              <div class="text-[10px] text-slate-500">Headings & Hero</div>
+            </div>
+          </div>
+
+          <!-- ACCENT GROWTH -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-emerald-500 flex items-end p-2 text-white font-mono text-[11px] font-bold">
+              #10B981
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Growth Emerald</div>
+              <div class="text-[10px] text-slate-500">1-Click Apply & Success</div>
+            </div>
+          </div>
+
+          <!-- UNI VIOLET -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-purple-600 flex items-end p-2 text-white font-mono text-[11px] font-bold">
+              #7C3AED
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">University Violet</div>
+              <div class="text-[10px] text-slate-500">Academic & Analytics</div>
+            </div>
+          </div>
+
+          <!-- ADMIN AMBER -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-amber-500 flex items-end p-2 text-white font-mono text-[11px] font-bold">
+              #D97706
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Admin Amber</div>
+              <div class="text-[10px] text-slate-500">Governance & Review</div>
+            </div>
+          </div>
+
+          <!-- SURFACE -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-slate-50 border border-slate-200 flex items-end p-2 text-slate-700 font-mono text-[11px] font-bold">
+              #F8FAFC
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Background Canvas</div>
+              <div class="text-[10px] text-slate-500">Base Application BG</div>
+            </div>
+          </div>
+
+          <!-- BORDER -->
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+            <div class="h-16 rounded-lg bg-slate-200 flex items-end p-2 text-slate-800 font-mono text-[11px] font-bold">
+              #E2E8F0
+            </div>
+            <div class="mt-2">
+              <div class="text-xs font-bold text-slate-900">Border Gray</div>
+              <div class="text-[10px] text-slate-500">Card Dividers</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 2. UI STATES SHOWCASE (EMPTY, LOADING, ERROR, ACTIVE) -->
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-brand-600"></i>
+          2. Explicit UX States (Empty, Loading, Active, Error)
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- STATE A: ACTIVE STATE -->
+          <div class="bg-white p-4 rounded-xl border-2 border-brand-500 space-y-3 relative">
+            <span class="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-600 text-white">Active State</span>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-brand-100 text-brand-600 flex items-center justify-center font-bold">✓</div>
+              <div>
+                <h4 class="text-xs font-bold text-slate-900">ระบบทำงานปกติ (Interactive)</h4>
+                <p class="text-[10px] text-slate-400">ปุ่มและฟอร์มตอบสนองทันที</p>
+              </div>
+            </div>
+            <input type="text" value="React Developer (กำลังพิมพ์...)" class="w-full text-xs p-2 rounded-lg border border-brand-500 ring-2 ring-brand-100 outline-none">
+            <button class="w-full py-1.5 bg-brand-600 text-white rounded-lg text-xs font-semibold hover:bg-brand-700">Submit Application</button>
+          </div>
+
+          <!-- STATE B: LOADING SKELETON STATE -->
+          <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 relative">
+            <span class="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-400 text-white">Loading State</span>
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-slate-200 animate-pulse"></div>
+              <div class="space-y-1.5 flex-1">
+                <div class="h-3 bg-slate-200 rounded animate-pulse w-3/4"></div>
+                <div class="h-2 bg-slate-100 rounded animate-pulse w-1/2"></div>
+              </div>
+            </div>
+            <div class="h-8 bg-slate-100 rounded-lg animate-pulse"></div>
+            <div class="h-7 bg-slate-200 rounded-lg animate-pulse"></div>
+          </div>
+
+          <!-- STATE C: EMPTY STATE -->
+          <div class="bg-white p-4 rounded-xl border border-dashed border-slate-300 text-center space-y-2 relative">
+            <span class="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-600 text-white">Empty State</span>
+            <div class="w-10 h-10 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mt-2">
+              <i data-lucide="inbox" class="w-5 h-5"></i>
+            </div>
+            <h4 class="text-xs font-bold text-slate-800">ยังไม่มีประวัติการสมัครงาน</h4>
+            <p class="text-[10px] text-slate-400">ค้นหาตำแหน่งงานที่เปิดรับ และเริ่มยื่นใบสมัครครั้งแรกของคุณได้ทันที</p>
+            <button class="px-3 py-1 bg-brand-50 text-brand-600 rounded-md text-xs font-bold hover:bg-brand-100">ค้นหางานเดี๋ยวนี้</button>
+          </div>
+
+          <!-- STATE D: ERROR / REJECTED STATE -->
+          <div class="bg-white p-4 rounded-xl border border-red-300 space-y-3 relative bg-red-50/20">
+            <span class="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white">Error State</span>
+            <div class="flex items-center gap-2 text-red-600">
+              <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
+              <div class="text-xs font-bold">ไม่สามารถอัปโหลดไฟล์เรซูเม่ได้</div>
+            </div>
+            <p class="text-[10px] text-red-500">ขนาดไฟล์เกินกำหนด (สูงสุดไม่เกิน 5MB) และต้องเป็นไฟล์นามสกุล .PDF เท่านั้น</p>
+            <button class="w-full py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold hover:bg-red-200">เลือกไฟล์ใหม่</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. TYPOGRAPHY SCALE -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 space-y-3">
+        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">3. Typography Hierarchy Scale (Inter / Prompt / Plus Jakarta Sans)</h2>
+        <div class="space-y-2 text-slate-800">
+          <div class="flex items-baseline justify-between border-b border-slate-100 pb-2">
+            <span class="text-2xl font-extrabold">H1 / Heading Bold (28px - 32px)</span>
+            <span class="text-xs font-mono text-slate-400">Hero Headlines & Page Titles</span>
+          </div>
+          <div class="flex items-baseline justify-between border-b border-slate-100 pb-2">
+            <span class="text-xl font-bold">H2 / Section Title (20px - 24px)</span>
+            <span class="text-xs font-mono text-slate-400">Dashboard Cards & Modules</span>
+          </div>
+          <div class="flex items-baseline justify-between border-b border-slate-100 pb-2">
+            <span class="text-base font-semibold">H3 / Subheading (16px - 18px)</span>
+            <span class="text-xs font-mono text-slate-400">Job Titles & Roster Names</span>
+          </div>
+          <div class="flex items-baseline justify-between border-b border-slate-100 pb-2">
+            <span class="text-sm font-normal text-slate-600">Body Regular (14px - 15px)</span>
+            <span class="text-xs font-mono text-slate-400">Job Descriptions & Paragraphs</span>
+          </div>
+          <div class="flex items-baseline justify-between">
+            <span class="text-xs font-medium text-slate-500">Caption / Meta (11px - 12px)</span>
+            <span class="text-xs font-mono text-slate-400">Tags, Timestamps, Helper Notes</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ======================================================= -->
+  <!-- MODAL: 1-CLICK APPLICATION CONFIRMATION (INTERACTIVE)   -->
+  <!-- ======================================================= -->
+  <div id="applyModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <button onclick="closeApplyModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-start gap-3.5 pb-4 border-b border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-growth-100 text-growth-700 flex items-center justify-center font-bold flex-shrink-0">
+          <i data-lucide="send" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-900">ยืนยันการยื่นใบสมัคร (1-Click Application)</h3>
+          <p id="modalJobTitle" class="text-xs text-brand-600 font-semibold mt-0.5">Junior Fullstack Developer @ SCG Digital Ventures</p>
+        </div>
+      </div>
+
+      <div class="mt-4 space-y-4 text-xs">
+        <!-- ATTACHED RESUME VERIFICATION -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between font-bold text-slate-700">
+            <span>เอกสารเรซูเม่และข้อมูลที่จะส่งมอบ:</span>
+            <span class="text-[10px] text-growth-700 bg-growth-50 px-2 py-0.5 rounded font-mono">CU Verified</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-600">
+            <i data-lucide="file-check-2" class="w-4 h-4 text-brand-600"></i>
+            <span>Resume_Somchai_2026.pdf (วท.บ. วิทยาการคอมพิวเตอร์ จุฬาฯ)</span>
+          </div>
+          <p class="text-[11px] text-slate-400">
+            * สอดคล้องตามข้อกำหนด PDPA: ข้อมูลการศึกษาและผลการเรียนจะถูกเปิดเผยต่อบริษัทนี้เพื่อการพิจารณาคัดเลือกเท่านั้น
+          </p>
+        </div>
+
+        <!-- OPTIONAL COVER NOTE -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">ข้อความแนะนำตัวเพิ่มเติม (Cover Note - ตัวเลือกเสริม):</label>
+          <textarea rows="3" placeholder="ระบุเหตุผลที่คุณสนใจตำแหน่งนี้ หรือแนะนำผลงานเด่นของคุณ..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 text-xs text-slate-800"></textarea>
+        </div>
+      </div>
+
+      <!-- MODAL ACTIONS -->
+      <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <button onclick="closeApplyModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">
+          ยกเลิก
+        </button>
+        <button onclick="submitApplicationMock()" class="px-5 py-2 rounded-xl text-xs font-bold bg-growth-600 hover:bg-growth-500 text-white shadow-md flex items-center gap-1.5 transition-all">
+          <i data-lucide="check" class="w-4 h-4"></i> ยืนยันการส่งใบสมัคร
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-xs font-medium border border-slate-800 transform translate-y-20 opacity-0 transition-all duration-300">
+    <i data-lucide="check-circle" class="w-4 h-4 text-growth-400"></i>
+    <span id="toastMessage">ส่งใบสมัครสำเร็จ! อัปเดตเข้าระบบเรียบร้อยแล้ว</span>
+  </div>
+
+  <!-- SCRIPT CONTROLLERS -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Switch Persona Views
+    function switchView(viewName) {
+      document.querySelectorAll('.view-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-300');
+      });
+
+      const activeView = document.getElementById(`view-${viewName}`);
+      const activeBtn = document.getElementById(`btn-${viewName}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-sm');
+      }
+      lucide.createIcons();
+    }
+
+    // Switch ATS Pipeline Views (Kanban vs Table)
+    function switchAtsView(mode) {
+      const kanban = document.getElementById('atsKanbanView');
+      const table = document.getElementById('atsTableView');
+      const btnK = document.getElementById('btnAtsKanban');
+      const btnT = document.getElementById('btnAtsTable');
+
+      if (mode === 'kanban') {
+        kanban.classList.remove('hidden');
+        table.classList.add('hidden');
+        btnK.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white flex items-center gap-1';
+        btnT.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center gap-1';
+      } else {
+        kanban.classList.add('hidden');
+        table.classList.remove('hidden');
+        btnT.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white flex items-center gap-1';
+        btnK.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center gap-1';
+      }
+      lucide.createIcons();
+    }
+
+    // Modal Handlers
+    function openApplyModal(title, company) {
+      if (title && company) {
+        document.getElementById('modalJobTitle').innerText = `${title} @ ${company}`;
+      }
+      document.getElementById('applyModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeApplyModal() {
+      document.getElementById('applyModal').classList.add('hidden');
+    }
+
+    function submitApplicationMock() {
+      closeApplyModal();
+      showToast("ยื่นใบสมัครสำเร็จ! ติดตามความคืบหน้าได้ที่แท็บ 'ติดตามสถานะ'");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      const text = document.getElementById('toastMessage');
+      text.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    // Responsive Canvas Toggle
+    let isMobileSim = false;
+    function toggleDeviceView() {
+      const container = document.getElementById('canvasContainer');
+      const btn = document.getElementById('deviceToggleBtn');
+      isMobileSim = !isMobileSim;
+
+      if (isMobileSim) {
+        container.style.maxWidth = '420px';
+        btn.classList.add('text-brand-400', 'bg-slate-800');
+        showToast("สลับเป็นมุมมองจำลองหน้าจอมือถือ (Mobile Responsive Simulation)");
+      } else {
+        container.style.maxWidth = '80rem';
+        btn.classList.remove('text-brand-400', 'bg-slate-800');
+        showToast("สลับเป็นมุมมองหน้าจอคอมพิวเตอร์ (Desktop High-Density Mode)");
+      }
+    }
+  </script>
+</body>
+</html>

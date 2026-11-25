@@ -1,0 +1,143 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String              @id @default(cuid())
+  email            String              @unique
+  password         String
+  name             String
+  role             String              // "JOB_SEEKER", "COMPANY", "UNIVERSITY", "ADMIN"
+  phone            String?
+  avatar           String?
+  bio              String?
+  status           String              @default("ACTIVE") // ACTIVE, SUSPENDED, PENDING
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  // Profiles
+  jobSeekerProfile JobSeekerProfile?
+  companyProfile   CompanyProfile?
+  universityProfile UniversityProfile?
+
+  // Relations
+  jobs             Job[]               // Jobs posted if company
+  applications     Application[]       // Applications submitted if job seeker
+  studentProfiles  JobSeekerProfile[]  @relation("UniversityStudents") // If university, affiliated students
+  adminLogs        AdminLog[]
+}
+
+model JobSeekerProfile {
+  id               String       @id @default(cuid())
+  userId           String       @unique
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title            String?      // e.g. "Full Stack Developer"
+  skills           String?      // Comma-separated or JSON
+  experience       String?      // Years or description
+  education        String?      // e.g. "ปริญญาตรี วิศวกรรมคอมพิวเตอร์"
+  resumeUrl        String?
+  portfolioUrl     String?
+  studentId        String?      // รหัสนักศึกษา
+  faculty          String?      // คณะ
+  major            String?      // สาขาวิชา
+  graduationYear   Int?         // ปีการศึกษาที่จบ
+  employmentStatus String       @default("UNEMPLOYED") // "STUDYING", "UNEMPLOYED", "EMPLOYED", "INTERNING"
+  companyEmployed  String?      // บริษัทที่ได้งานทำ
+
+  // Affiliated University
+  universityId     String?
+  university       User?        @relation("UniversityStudents", fields: [universityId], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model CompanyProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName String
+  industry    String?  // e.g. "เทคโนโลยี / ไอที", "การตลาดดิจิทัล"
+  location    String?  // e.g. "กรุงเทพมหานคร", "Remote"
+  website     String?
+  description String?
+  logo        String?
+  isVerified  Boolean  @default(false)
+  employeeCount String? // e.g. "10-50 คน"
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UniversityProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  universityName String
+  campus         String?
+  contactPerson  String?
+  phone          String?
+  website        String?
+  description    String?
+  logo           String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Job {
+  id           String        @id @default(cuid())
+  companyId    String
+  company      User          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title        String
+  category     String        // "Web & Programming", "Design & Creative", "Marketing", "Content", "Engineering", "Business"
+  jobType      String        // "Full-time", "Part-time", "Freelance", "Internship", "Remote"
+  location     String
+  salaryMin    Int?
+  salaryMax    Int?
+  salaryType   String        @default("MONTHLY") // "MONTHLY", "PROJECT", "HOURLY"
+  description  String
+  requirements String
+  benefits     String?
+  status       String        @default("ACTIVE") // "ACTIVE", "CLOSED", "PENDING_APPROVAL"
+  views        Int           @default(0)
+  featured     Boolean       @default(false)
+  urgent       Boolean       @default(false)
+
+  applications Application[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Application {
+  id             String    @id @default(cuid())
+  jobId          String
+  job            Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicantId    String
+  applicant      User      @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  coverLetter    String?
+  resumeUrl      String?
+  expectedSalary Int?
+  status         String    @default("PENDING") // PENDING, REVIEWED, INTERVIEW, ACCEPTED, REJECTED
+  interviewDate  DateTime?
+  notes          String?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model AdminLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  action    String
+  target    String?
+  details   String?
+  createdAt DateTime @default(now())
+}
